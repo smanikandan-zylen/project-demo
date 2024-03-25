@@ -1,0 +1,24 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  Deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: Install ssh client
+        run: sudo apt -get install openssh-client -y
+
+      -name: SSH into EC@ instance and run a command
+        uses: applyboy/ssh-action@master
+        with:
+          host: ${{ ecrets.SSH_IP_ADDRESS }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo apt-get update
+            sudo apt-get install nginx -y
